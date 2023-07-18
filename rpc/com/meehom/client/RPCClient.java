@@ -1,6 +1,8 @@
 package com.meehom.client;
 
+import com.meehom.common.Blog;
 import com.meehom.common.User;
+import com.meehom.service.BlogService;
 import com.meehom.service.UserService;
 
 import java.io.IOException;
@@ -26,6 +28,10 @@ public class RPCClient {
             User meehom = User.builder().username("meehom").id(100).sex(true).build();
             Integer integer = proxy.insertUserId(meehom);
             System.out.println("向服务端插入数据" + integer);
+
+            BlogService blogService = clientProxy.getProxy(BlogService.class);
+            Blog blogById = blogService.getBlogById(100);
+            System.out.println("服务器返回的blog"+ blogById);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("客户端启动失败");
