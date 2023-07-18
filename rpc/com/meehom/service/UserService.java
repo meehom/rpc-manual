@@ -9,4 +9,7 @@ import com.meehom.common.User;
  */
 public interface UserService {
     User getUserByUserId(Integer id);
+
+    // 给这个服务增加一个功能
+    Integer insertUserId(User user);
 }

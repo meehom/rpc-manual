@@ -1,6 +1,7 @@
 package com.meehom.client;
 
 import com.meehom.common.User;
+import com.meehom.service.UserService;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,15 +19,13 @@ public class RPCClient {
         // 建立socket连接
         Socket socket = null;
         try {
-            socket = new Socket("127.0.0.1", 8899);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-            // 传给服务器id
-            objectOutputStream.writeInt(new Random().nextInt());
-            objectOutputStream.flush();
-            // 服务器返回
-            User user = (User) objectInputStream.readObject();
-            System.out.println("服务器返回的user"+ user);
+            ClientProxy clientProxy = new ClientProxy("127.0.0.1", 8899);
+            UserService proxy = clientProxy.getProxy(UserService.class);
+            User userByUserId = proxy.getUserByUserId(10);
+            System.out.println("服务器返回的user"+ userByUserId);
+            User meehom = User.builder().username("meehom").id(100).sex(true).build();
+            Integer integer = proxy.insertUserId(meehom);
+            System.out.println("向服务端插入数据" + integer);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("客户端启动失败");
