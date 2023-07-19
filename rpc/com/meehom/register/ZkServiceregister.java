@@ -1,6 +1,8 @@
 package com.meehom.register;
 
 
+import com.meehom.loadbalance.LoadBalance;
+import com.meehom.loadbalance.RandomLoadBalance;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -17,6 +19,8 @@ import java.util.List;
 public class ZkServiceregister implements ServiceRegister {
 
     private CuratorFramework client;
+
+    private LoadBalance loadBalance = new RandomLoadBalance();
 
     private static final String ROOT_PATH = "MyRPC";
 
@@ -58,7 +62,8 @@ public class ZkServiceregister implements ServiceRegister {
         List<String> strings = null;
         try {
             strings = client.getChildren().forPath("/" + serviceName);
-            String string = strings.get(0);
+//            String string = strings.get(0);
+            String string = loadBalance.banlance(strings);
             return parseAddress(string);
         } catch (Exception e) {
             throw new RuntimeException(e);
