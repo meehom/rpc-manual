@@ -10,7 +10,7 @@ import com.meehom.service.UserService;
  */
 public class TestClient {
     public static void main(String[] args) {
-        NettyRPClient simpleRPCClient = new NettyRPClient("127.0.0.1", 8899);
+        NettyRPClient simpleRPCClient = new NettyRPClient();
         ClientProxy clientProxy = new ClientProxy(simpleRPCClient);
         UserService proxy = clientProxy.getProxy(UserService.class);
         User userByUserId = proxy.getUserByUserId(20);
