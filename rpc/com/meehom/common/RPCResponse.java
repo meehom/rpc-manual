@@ -1,7 +1,9 @@
 package com.meehom.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -12,15 +14,18 @@ import java.io.Serializable;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RPCResponse implements Serializable {
     // 状态信息
     private int code;
     private String message;
     // 具体数据
     private Object data;
+    private Class<?> dataType;
 
     public static RPCResponse success(Object data) {
-        return RPCResponse.builder().code(200).data(data).build();
+        return RPCResponse.builder().code(200).dataType(data.getClass()).data(data).build();
     }
 
     public static RPCResponse fail(){
