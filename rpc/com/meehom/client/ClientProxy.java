@@ -15,9 +15,7 @@ import java.lang.reflect.Proxy;
  */
 @AllArgsConstructor
 public class ClientProxy implements InvocationHandler {
-    private String host;
-
-    private int port;
+    private RPCClient rpcClient;
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // request 构建
@@ -25,7 +23,7 @@ public class ClientProxy implements InvocationHandler {
                 .methodName(method.getName())
                 .params(args).paramsTypes(method.getParameterTypes()).build();
         // 数据传输
-        RPCResponse response = IOClient.sendRequest(host, port, request);
+        RPCResponse response = rpcClient.sendRequest(request);
         return response.getData();
     }
 

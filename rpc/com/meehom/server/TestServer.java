@@ -19,7 +19,7 @@ public class TestServer {
         serviceProvider.providerServiceInterface(userService);
         serviceProvider.providerServiceInterface(blogService);
 
-        RPCServer RPCServer = new ThreadPoolRPCRPCServer(serviceProvider);
+        RPCServer RPCServer = new NettyRPCServer(serviceProvider);
         RPCServer.start(8899);
     }
 }
